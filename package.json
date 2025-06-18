@@ -14,10 +14,12 @@
     "bulma": "^1.0.4",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "leaflet": "^1.9.4",
     "mysql2": "^3.14.1",
     "openai": "^4.103.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^6.30.1",
     "sequelize": "^6.37.7"
   },
