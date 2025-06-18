@@ -1,5 +1,239 @@
 /* Estilos principales para el componente Clima */
 
+/* Clases para bloques principales y fallback */
+.clima-titulo-principal {
+  color: #fff;
+  text-shadow: none;
+  margin-bottom: 10px;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+.clima-info-api {
+  color: #e0e0e0;
+  background: rgba(20,30,60,0.8);
+  border-radius: 8px;
+  padding: 12px 20px;
+  margin-bottom: 22px;
+  font-size: 15px;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  margin-left: auto;
+  margin-right: auto;
+}
+.clima-info-api-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.clima-info-api-link {
+  margin-top: 8px;
+}
+.clima-info-api-link a {
+  color: #90caf9;
+  text-decoration: none;
+  border-bottom: 1px dashed #90caf9;
+  padding-bottom: 1px;
+  transition: all 0.2s;
+}
+.clima-info-api-link a:hover {
+  opacity: 0.8;
+}
+.clima-bienvenida {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-radius: 8px;
+  padding: 28px 24px;
+  margin: 24px auto;
+  font-size: 1.2rem;
+  text-align: center;
+  max-width: 600px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+
+/* Estilos para el formulario de búsqueda */
+.clima-busqueda-contenedor {
+  position: relative;
+  margin-bottom: 24px;
+  width: 100%;
+  max-width: 500px;
+  z-index: 1000;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.clima-formulario {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.clima-busqueda-input-contenedor {
+  position: relative;
+  flex: 1;
+  max-width: 500px;
+}
+
+.clima-busqueda-input {
+  padding: 12px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #1976d2;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.clima-busqueda-input:focus,
+.clima-input-focus {
+  border-color: #115293;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.25);
+}
+
+.clima-busqueda-boton {
+  padding: 0 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+  white-space: nowrap;
+}
+
+.clima-busqueda-boton:hover {
+  background: #1565c0;
+}
+
+.clima-busqueda-icono {
+  margin-right: 6px;
+}
+
+/* Estilos para la lista de sugerencias */
+.clima-sugerencias-lista {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1001;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.clima-sugerencia-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fff;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clima-sugerencia-item:last-child {
+  border-bottom: none;
+}
+
+.clima-sugerencia-item:hover {
+  background-color: #f5f5f5;
+}
+
+.clima-sugerencia-icono {
+  color: #1976d2;
+  flex-shrink: 0;
+}
+
+.clima-sugerencia-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.clima-sugerencia-nombre {
+  font-weight: 600;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clima-sugerencia-desc {
+  font-size: 0.85em;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Estilos para el mapa */
+.clima-mapa-contenedor {
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 36px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+  border: 2px solid #21e6c1;
+  background: #fff;
+}
+
+.clima-mapa-header {
+  background: #1976d2;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clima-mapa-icono {
+  font-size: 1.2em;
+}
+
+.clima-mapa-titulo {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.clima-mapa-contenido {
+  height: 350px;
+  width: 100%;
+  position: relative;
+}
+
+/* Asegurar que el mapa ocupe todo el espacio asignado */
+.clima-mapa {
+  height: 100%;
+  width: 100%;
+}
+
+/* Asegurar que el contenedor de Leaflet tenga las dimensiones correctas */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  min-height: 100%;
+}
+
 /* Tarjetas horizontales para los próximos 5 días */
 
 /* Pronóstico diario - contenedor principal */

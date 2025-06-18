@@ -281,71 +281,60 @@ const Clima = () => {
 
   // Renderizado principal
   return (
-    <div className="clima-principal">
-      {/* Título principal */}
-      <h1 style={{ color: '#fff', textShadow: 'none', marginBottom: 10 }}>Pronóstico del Clima Avanzado</h1>
-      
-      {/* Información sobre la API utilizada */}
-      <div style={{ 
-        color: '#e0e0e0', 
-        background: 'rgba(20,30,60,0.8)', 
-        borderRadius: 8, 
-        padding: '12px 20px', 
-        marginBottom: 22, 
-        fontSize: 15, 
-        maxWidth: 800, 
-        textAlign: 'center',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <span>🌍 <b>API Premium:</b> OpenWeatherMap One Call 3.0</span>
-          <span>•</span>
-          <span>⏱️ Actualización en tiempo real</span>
-          <span>•</span>
-          <span>📍 Precisión mejorada</span>
-        </div>
-        <div style={{ marginTop: '8px' }}>
-          <a 
-            href="https://openweathermap.org/api/one-call-3" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            style={{ 
-              color: '#90caf9', 
-              textDecoration: 'none',
-              borderBottom: '1px dashed #90caf9',
-              paddingBottom: '1px',
-              transition: 'all 0.2s'
-            }}
-            onMouseOver={(e) => e.target.style.opacity = '0.8'}
-            onMouseOut={(e) => e.target.style.opacity = '1'}
-          >
-            Documentación de la API
-          </a>
-        </div>
+  <div className="clima-principal">
+    <h1 className="clima-titulo-principal">Pronóstico del Clima Avanzado</h1>
+    <div className="clima-info-api">
+      <div className="clima-info-api-row">
+        <span>🌍 <b>API Premium:</b> OpenWeatherMap One Call 3.0</span>
+        <span>•</span>
+        <span>⏱️ Actualización en tiempo real</span>
+        <span>•</span>
+        <span>📍 Precisión mejorada</span>
       </div>
+      <div className="clima-info-api-link">
+        <a
+          href="https://openweathermap.org/api/one-call-3"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Documentación de la API
+        </a>
+      </div>
+    </div>
+
+    {/* Fallback de error */}
+    {error && (
+      <div className="clima-error">
+        <b>Error:</b> {error}
+      </div>
+    )}
+
+    {/* Fallback de carga */}
+    {cargando && (
+      <div className="clima-cargando">
+        <div className="spinner"></div>
+        <div>Cargando datos del clima...</div>
+      </div>
+    )}
+
+    {/* Fallback de bienvenida si no hay datos y no está cargando ni error */}
+    {!cargando && !error && !datos && (
+      <div className="clima-bienvenida">
+        <p>Busca una ciudad para ver el pronóstico detallado, o permite la geolocalización para usar tu ubicación actual.</p>
+      </div>
+    )}
+
 
       {/* Formulario de búsqueda de ciudad */}
-      <div style={{ 
-        position: 'relative', 
-        marginBottom: 24, 
-        width: '100%', 
-        maxWidth: 500,
-        zIndex: 1000
-      }}>
+      <div className="clima-busqueda-contenedor">
         <form
           onSubmit={e => {
             e.preventDefault();
             if (busqueda.trim()) buscarClima(busqueda.trim());
           }}
-          style={{ 
-            display: 'flex', 
-            gap: 12, 
-            justifyContent: 'center',
-            position: 'relative',
-            width: '100%'
-          }}
+          className="clima-formulario"
         >
-          <div style={{ position: 'relative', flex: 1, maxWidth: 500 }}>
+          <div className="clima-busqueda-input-contenedor">
             <input
               ref={inputBusquedaRef}
               type="text"
@@ -356,63 +345,28 @@ const Clima = () => {
               }}
               onFocus={(e) => {
                 setMostrarSugerencias(true);
-                e.target.style.borderColor = '#115293';
+                e.target.classList.add('clima-input-focus');
               }}
               onBlur={(e) => {
                 setTimeout(() => setMostrarSugerencias(false), 200);
-                e.target.style.borderColor = '#1976d2';
+                e.target.classList.remove('clima-input-focus');
               }}
               placeholder="Buscar ciudad, país (ej: Cordoba, AR)"
-              style={{ 
-                padding: '12px 16px', 
-                fontSize: 16, 
-                borderRadius: 8, 
-                border: '2px solid #1976d2',
-                width: '100%',
-                boxSizing: 'border-box',
-                boxShadow: '0 2px 8px rgba(25, 118, 210, 0.2)',
-                transition: 'all 0.3s ease',
-                outline: 'none'
-              }}
+              className="clima-busqueda-input"
             />
             
-            {/* Sugerencias de búsqueda */}
             {mostrarSugerencias && sugerencias.length > 0 && (
-              <div style={{
-                position: 'absolute',
-                top: '100%',
-                left: 0,
-                right: 0,
-                background: '#fff',
-                border: '1px solid #ddd',
-                borderRadius: '0 0 8px 8px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                zIndex: 1001,
-                maxHeight: '300px',
-                overflowY: 'auto',
-                marginTop: '4px'
-              }}>
+              <div className="clima-sugerencias-lista">
                 {sugerencias.map((sugerencia, index) => (
                   <div
                     key={`${sugerencia.lat}-${sugerencia.lon}-${index}`}
                     onClick={() => seleccionarSugerencia(sugerencia)}
-                    style={{
-                      padding: '10px 16px',
-                      cursor: 'pointer',
-                      borderBottom: '1px solid #f0f0f0',
-                      backgroundColor: '#fff',
-                      transition: 'background-color 0.2s',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px'
-                    }}
-                    onMouseOver={(e) => e.target.style.backgroundColor = '#f5f5f5'}
-                    onMouseOut={(e) => e.target.style.backgroundColor = '#fff'}
+                    className="clima-sugerencia-item"
                   >
-                    <span style={{ color: '#1976d2' }}>📍</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 600 }}>{sugerencia.name}</div>
-                      <div style={{ fontSize: '0.85em', color: '#666' }}>
+                    <span className="clima-sugerencia-icono">📍</span>
+                    <div className="clima-sugerencia-texto">
+                      <div className="clima-sugerencia-nombre">{sugerencia.name}</div>
+                      <div className="clima-sugerencia-desc">
                         {sugerencia.state ? `${sugerencia.state}, ` : ''}{sugerencia.country}
                       </div>
                     </div>
@@ -422,27 +376,8 @@ const Clima = () => {
             )}
           </div>
           
-          <button
-            type="submit"
-            style={{ 
-              padding: '0 24px', 
-              fontSize: 16, 
-              borderRadius: 8, 
-              background: '#1976d2', 
-              color: '#fff', 
-              border: 'none', 
-              cursor: 'pointer', 
-              fontWeight: 600,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.2s',
-              boxShadow: '0 2px 8px rgba(25, 118, 210, 0.3)'
-            }}
-            onMouseOver={(e) => e.target.style.background = '#1565c0'}
-            onMouseOut={(e) => e.target.style.background = '#1976d2'}
-          >
-            <span style={{ marginRight: '6px' }}>🔍</span> Buscar
+          <button type="submit" className="clima-busqueda-boton">
+            <span className="clima-busqueda-icono">🔍</span> Buscar
           </button>
         </form>
       </div>
@@ -461,32 +396,17 @@ const Clima = () => {
       
       {/* Mapa de localización */}
       {!cargando && !error && datos && datos.current && (
-        <div style={{ 
-          width: '100%', 
-          maxWidth: 1000, 
-          marginBottom: 36,
-          borderRadius: 8,
-          overflow: 'hidden',
-          boxShadow: '0 6px 24px rgba(0,0,0,0.15)',
-          border: '2px solid #21e6c1'
-        }}>
-          <div style={{ 
-            background: '#1976d2', 
-            color: 'white', 
-            padding: '10px 20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px'
-          }}>
-            <span style={{ fontSize: '1.2em' }}>📍</span>
-            <h3 style={{ margin: 0 }}>Ubicación Actual: {ciudad}</h3>
+        <div className="clima-mapa-contenedor">
+          <div className="clima-mapa-header">
+            <span className="clima-mapa-icono">📍</span>
+            <h3 className="clima-mapa-titulo">Ubicación Actual: {ciudad}</h3>
           </div>
-          <div style={{ height: '350px', width: '100%', position: 'relative' }}>
+          <div className="clima-mapa-contenido">
             <MapContainer 
               center={mapCenter} 
               zoom={11} 
-              style={{ height: '100%', width: '100%' }}
               zoomControl={false}
+              className="clima-mapa"
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -520,54 +440,13 @@ const Clima = () => {
       
       {/* Renderizado de datos actuales del clima */}
       {!cargando && !error && datos && datos.current && (
-        <div className="clima-bloque-principal" style={{
-          width: '100%',
-          maxWidth: 1000,
-          background: '#fff',
-          borderRadius: '12px',
-          boxShadow: '0 8px 32px 0 rgba(33, 150, 243, 0.2)',
-          border: '2px solid #2196f3',
-          marginBottom: 36,
-          padding: '32px 24px',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 36,
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
+        <div className="clima-bloque-principal">
           {/* Efecto de gradiente en la esquina superior derecha */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            width: '200px',
-            height: '200px',
-            background: 'radial-gradient(circle at 100% 0%, rgba(33, 150, 243, 0.1) 0%, rgba(33, 150, 243, 0) 70%)',
-            zIndex: 0
-          }}></div>
+          <div className="clima-bloque-gradiente"></div>
           
           {/* Indicador de actualización */}
-          <div style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            fontSize: '12px',
-            color: '#666',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            zIndex: 1
-          }}>
-            <span style={{
-              display: 'inline-block',
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: '#4caf50',
-              animation: 'pulse 2s infinite'
-            }}></span>
+          <div className="clima-actualizado-indicador">
+            <span className="clima-actualizado-punto"></span>
             Actualizado ahora
           </div>
           
