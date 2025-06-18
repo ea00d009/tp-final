@@ -1,5 +1,100 @@
 /* Estilos principales para el componente Clima */
 
+/* Tarjetas horizontales para los próximos 5 días */
+
+/* Pronóstico diario - contenedor principal */
+.clima-diario-container {
+  width: 100%;
+  max-width: 1000px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  overflow: hidden;
+  border: 1px solid rgba(25, 118, 210, 0.1);
+  margin-bottom: 36px;
+}
+.clima-diario-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.clima-diario-titulo {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0d47a1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.clima-diario-chip {
+  font-size: 14px;
+  color: #5c6bc0;
+  background: #e8eaf6;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+.clima-diario-lista {
+  padding: 8px;
+}
+
+.clima-contenedor-horizontal {
+  gap: 16px;
+  margin-top: 8px;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+.clima-tarjeta-horizontal {
+  min-width: 180px;
+  max-width: 200px;
+  background: #fff;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 18px;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+}
+.clima-titulo-horizontal {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+.clima-img-horizontal {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 8px;
+}
+.clima-temp-horizontal {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1976d2;
+  margin-bottom: 4px;
+}
+.clima-desc-horizontal {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 5px;
+}
+.clima-detalle-horizontal {
+  font-size: 13px;
+  color: #333;
+}
+
+/* Clases para efectos hover */
+.estilo-indicador {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.estilo-indicador:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
 html, body {
   width: 100vw;
   min-height: 100vh;

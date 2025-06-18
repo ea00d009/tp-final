@@ -24,12 +24,16 @@ function ActualizarMapa({ center }) {
 
 // Componente funcional principal
 const Clima = () => {
+  console.log('Renderizando componente Clima');
+  
   // Estados principales del componente
   const [busqueda, setBusqueda] = useState('');      // Texto del input de búsqueda
   const [ciudad, setCiudad] = useState('');          // Nombre de la ciudad actual
   const [datos, setDatos] = useState(null);          // Respuesta completa de One Call 3.0
   const [cargando, setCargando] = useState(false);   // Estado de carga
   const [error, setError] = useState('');            // Mensaje de error
+  
+  console.log('Estado actual:', { cargando, error, datos: datos ? 'Datos cargados' : 'Sin datos', ciudad });
 
   // API KEY de OpenWeatherMap (One Call 3.0)
   // NOTA: Reemplaza esto con tu clave API de pago
@@ -155,35 +159,40 @@ const Clima = () => {
 
   // Al montar, intentar obtener la ubicación del usuario
   useEffect(() => {
+    console.log('useEffect de montaje ejecutándose');
     const obtenerUbicacionUsuario = () => {
       if (navigator.geolocation) {
+        console.log('Solicitando ubicación al navegador...');
         navigator.geolocation.getCurrentPosition(
           (posicion) => {
+            console.log('Ubicación obtenida:', posicion.coords);
             const { latitude, longitude } = posicion.coords;
             // Usar la API de geocodificación inversa para obtener el nombre de la ciudad
             fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`)
               .then(res => res.json())
               .then(data => {
                 if (data && data[0]) {
-                  buscarClima(data[0]);
+                  buscarClima(data[0].name);
                 } else {
-                  // Si no se puede obtener la ciudad, usar la ubicación por defecto
+                  console.log('No se pudo obtener el nombre de la ciudad, usando coordenadas');
                   buscarClima({ lat: latitude, lon: longitude, name: 'Tu Ubicación' });
                 }
               })
-              .catch(() => {
-                // En caso de error, usar la ubicación por defecto
+              .catch(error => {
+                console.error('Error al obtener el nombre de la ciudad:', error);
                 buscarClima({ lat: latitude, lon: longitude, name: 'Tu Ubicación' });
               });
           },
           (error) => {
             console.error('Error al obtener la ubicación:', error);
-            // Usar Buenos Aires como ubicación por defecto
+            // Si hay un error o el usuario deniega la ubicación, usar Buenos Aires por defecto
+            console.log('Usando ubicación por defecto: Buenos Aires');
             buscarClima('Buenos Aires');
           }
         );
       } else {
-        // Si el navegador no soporta geolocalización
+        console.log('Geolocalización no soportada, usando Buenos Aires por defecto');
+        // Si el navegador no soporta geolocalización, usar Buenos Aires por defecto
         buscarClima('Buenos Aires');
       }
     };
@@ -192,20 +201,8 @@ const Clima = () => {
   }, []);
 
   // Estilos reutilizables
-  const estiloIndicador = {
-    background: '#f8f9fa',
-    padding: '12px',
-    borderRadius: '10px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-    '&:hover': {
-      transform: 'translateY(-2px)',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-    }
-  };
+  // Todos los estilos se manejan ahora por clases CSS en Clima.css
+  // Elimina estilos inline y usa solo clases para mantener el orden y la mantenibilidad.
 
   // Animación para el spinner de carga
   const estilosGlobales = `
@@ -949,48 +946,16 @@ const Clima = () => {
 
       {/* Pronóstico diario (próximos 7 días) */}
       {!cargando && !error && datos && datos.daily && (
-        <div style={{
-          width: '100%',
-          maxWidth: 1000,
-          background: 'white',
-          borderRadius: '12px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-          overflow: 'hidden',
-          border: '1px solid rgba(25, 118, 210, 0.1)',
-          marginBottom: 36
-        }}>
-          <div style={{
-            padding: '16px 24px',
-            borderBottom: '1px solid rgba(0,0,0,0.05)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <h3 style={{ 
-              margin: 0, 
-              fontSize: '18px',
-              fontWeight: '600',
-              color: '#0d47a1',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}>
-              <span>📆</span>
-              <span>Pronóstico semanal</span>
-            </h3>
-            <div style={{
-              fontSize: '14px',
-              color: '#5c6bc0',
-              background: '#e8eaf6',
-              padding: '4px 10px',
-              borderRadius: '12px',
-              fontWeight: '500'
-            }}>
-              Próximos 7 días
-            </div>
-          </div>
+        <div className="clima-diario-container">
+          <div className="clima-diario-header">
+  <h3 className="clima-diario-titulo">
+    <span>📆</span>
+    <span>Pronóstico semanal</span>
+  </h3>
+  <div className="clima-diario-chip">Próximos 7 días</div>
+</div>
           
-          <div style={{ padding: '8px' }}>
+          <div className="clima-diario-lista">
             {datos.daily.slice(0, 7).map((dia, i) => {
               const fecha = new Date(dia.dt * 1000);
               const diaSemana = fecha.toLocaleDateString('es-AR', { weekday: 'long' });
@@ -1198,23 +1163,23 @@ const Clima = () => {
 
       {/* Tarjetas de los próximos 5 días */}
       {!cargando && !error && fechas.slice(1).length > 0 && (
-        <div className="clima-contenedor" style={{ gap: 16, marginTop: 8, display: 'flex', flexWrap: 'nowrap', justifyContent: 'center' }}>
+        <div className="clima-contenedor clima-contenedor-horizontal">
           {fechas.slice(1, 6).map((fecha, idx) => {
             // Selecciona el bloque del mediodía si existe, si no el primero del día
             const bloqueDia = diasPronostico[fecha].find(b => new Date(b.dt * 1000).getHours() === 12) || diasPronostico[fecha][0];
             return (
-              <div key={bloqueDia.dt} className="clima-tarjeta" style={{ minWidth: 180, maxWidth: 200, background: '#fff', borderRadius: 0, boxShadow: 'none', padding: 18, alignItems: 'center', border: '1px solid #e0e0e0' }}>
-                <div className="clima-titulo" style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>
+              <div key={bloqueDia.dt} className="clima-tarjeta clima-tarjeta-horizontal">
+                <div className="clima-titulo clima-titulo-horizontal">
                   {new Date(bloqueDia.dt * 1000).toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'short' })}
                 </div>
                 <img
                   src={`https://openweathermap.org/img/wn/${bloqueDia.weather[0]?.icon}@4x.png`}
                   alt={bloqueDia.weather[0]?.description || ''}
-                  style={{ width: 60, height: 60, marginBottom: 8 }}
+                  className="clima-img-horizontal"
                 />
-                <div style={{ fontSize: 22, fontWeight: 700, color: '#1976d2', marginBottom: 4 }}>{Math.round(bloqueDia.main.temp)}°C</div>
-                <div style={{ fontSize: 15, color: '#555', marginBottom: 5 }}>{bloqueDia.weather[0]?.description ? bloqueDia.weather[0].description.charAt(0).toUpperCase() + bloqueDia.weather[0].description.slice(1) : ''}</div>
-                <div style={{ fontSize: 13, color: '#333' }}>
+                <div className="clima-temp-horizontal">{Math.round(bloqueDia.main.temp)}°C</div>
+                <div className="clima-desc-horizontal">{bloqueDia.weather[0]?.description ? bloqueDia.weather[0].description.charAt(0).toUpperCase() + bloqueDia.weather[0].description.slice(1) : ''}</div>
+                <div className="clima-detalle-horizontal">
                   <b>Humedad:</b> {bloqueDia.main.humidity}%<br />
                   <b>Viento:</b> {bloqueDia.wind.speed} m/s
                 </div>

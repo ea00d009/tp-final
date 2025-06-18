@@ -7,6 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Importamos el componente principal de nuestra aplicación, 'Aplicacion', desde './Aplicacion.jsx'.
+// Importa el componente principal de la aplicación (Clima)
 import Aplicacion from './Aplicacion';
 
 // Importamos 'estilosGlobales.css'. Este archivo usualmente contiene estilos globales
