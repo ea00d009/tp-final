@@ -1,0 +1,50 @@
+body {
+  background: linear-gradient(135deg, #2b3a67 0%, #496a9a 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logotipo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logotipo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logotipo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes girar-logotipo {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logotipo {
+    animation: girar-logotipo infinite 20s linear;
+  }
+}
+
+.tarjeta {
+  padding: 2em;
+}
+
+.leer-la-documentacion {
+  color: #888;
+}
